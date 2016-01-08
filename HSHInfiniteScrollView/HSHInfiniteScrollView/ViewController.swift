@@ -13,7 +13,7 @@ class ViewController: UIViewController {
     // MARK: - 懒加载图片展示的view
     lazy var infiniteScrollView : HSHInfiniteScrollView = {
 
-        let infiniteScrollView = HSHInfiniteScrollView(images: ["img_00", "img_01", "img_02", "img_03", "img_04"], imageSelectCallBack: { (index) -> () in
+        let infiniteScrollView = HSHInfiniteScrollView(images: ["image1", "image2", "image3", "image4", "image5"], imageSelectCallBack: { (index) -> () in
             // 在此执行点击图片的动作 index为图片数组下标
             print(index)
         })
