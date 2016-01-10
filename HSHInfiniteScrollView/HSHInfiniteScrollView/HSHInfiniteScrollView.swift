@@ -8,11 +8,19 @@
 
 import UIKit
 
+
+enum PageControlLocation{
+    
+    case left, right, center
+}
+
 class HSHInfiniteScrollView: UIView {
     
     var images : [String] = []
     var scrollDirectionLandscape : Bool = false
-    var showPageControl : Bool = false
+    var showPageControl : Bool = true // 显示pageControl
+    var isAutoScroll : Bool = false // 开启自动滚动
+    var pageControlLocation : PageControlLocation = .left // pageControl位置
     let imageViewCount : Int = 3
     var timer : NSTimer? = nil
     var imageSelectCallBack : ((index: Int) -> ())?
@@ -60,8 +68,9 @@ class HSHInfiniteScrollView: UIView {
         self.addSubview(scrollView!)
         self.addSubview(pageControl)
         addChildViewsConstraints()
-        
-        startTimer()
+        if isAutoScroll{
+            startTimer()
+        }
     }
     
     // MARK: - 系统回调
@@ -105,10 +114,22 @@ class HSHInfiniteScrollView: UIView {
     
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         
-        let layoutH1 = NSLayoutConstraint.constraintsWithVisualFormat("H:[pageControl]-|", options: .DirectionLeadingToTrailing, metrics: nil, views: dict)
+        var str : String?
+        switch pageControlLocation{
+        
+        case .left : 
+            str = "H:|-[pageControl]"
+        case .right:
+            str = "H:[pageControl]-|"
+        case .center:
+            str = "H:|-[pageControl]-|"
+            
+        }
+        
+        let layoutH1 = NSLayoutConstraint.constraintsWithVisualFormat(str!, options: .DirectionLeadingToTrailing, metrics: nil, views: dict)
         self.addConstraints(layoutH1)
         
-        let layoutV1 = NSLayoutConstraint.constraintsWithVisualFormat("V:[pageControl]|", options: .DirectionLeadingToTrailing, metrics: nil, views: dict)
+        let layoutV1 = NSLayoutConstraint.constraintsWithVisualFormat("V:[pageControl]-(-5)-|", options: .DirectionLeadingToTrailing, metrics: nil, views: dict)
         self.addConstraints(layoutV1)
     }
     
@@ -195,11 +216,16 @@ extension HSHInfiniteScrollView : UIScrollViewDelegate{
     }
     
     func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        startTimer()
+        if isAutoScroll{
+            startTimer()
+        }
     }
     
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {
-        stopTimer()
+        if isAutoScroll{
+        
+            stopTimer()
+        }
     }
 
 }

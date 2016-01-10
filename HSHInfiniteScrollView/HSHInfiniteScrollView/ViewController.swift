@@ -19,6 +19,7 @@ class ViewController: UIViewController {
         })
         
         infiniteScrollView.scrollDirectionLandscape = false
+        
         return infiniteScrollView
     }()
     
