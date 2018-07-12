@@ -99,7 +99,7 @@
 				TargetAttributes = {
 					A5B31F2B1C3E8A800047D1DD = {
 						CreatedOnToolsVersion = 7.2;
-						DevelopmentTeam = 473WC8ARM6;
+						DevelopmentTeam = Q679V6BVJ7;
 					};
 				};
 			};
@@ -254,6 +254,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = Q679V6BVJ7;
 				INFOPLIST_FILE = HSHInfiniteScrollView/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.shanhui.HSHInfiniteScrollView;
@@ -266,6 +267,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = Q679V6BVJ7;
 				INFOPLIST_FILE = HSHInfiniteScrollView/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.shanhui.HSHInfiniteScrollView;
