@@ -22,14 +22,14 @@ class HSHInfiniteScrollView: UIView {
     var isAutoScroll : Bool = false // 开启自动滚动
     var pageControlLocation : PageControlLocation = .left // pageControl位置
     let imageViewCount : Int = 3
-    var timer : NSTimer? = nil
-    var imageSelectCallBack : ((index: Int) -> ())?
+    var timer : Timer? = nil
+    var imageSelectCallBack : ((_ index: Int) -> ())?
     
     
     // MARK: - lazy
     lazy var scrollView : UIScrollView? = {
         let scrollView = UIScrollView()
-        scrollView.pagingEnabled = true
+        scrollView.isPagingEnabled = true
         scrollView.delegate = self
         scrollView.bounces = false
         scrollView.showsHorizontalScrollIndicator = false
@@ -37,7 +37,7 @@ class HSHInfiniteScrollView: UIView {
         
         for i in 0..<self.imageViewCount {
             let imageView = UIImageView()
-            imageView.userInteractionEnabled = true
+            imageView.isUserInteractionEnabled = true
             scrollView.addSubview(imageView)
             
         }
@@ -47,13 +47,13 @@ class HSHInfiniteScrollView: UIView {
     lazy var pageControl : UIPageControl = {
         let pageControl = UIPageControl()
         pageControl.currentPage = 0
-        pageControl.hidden = !self.showPageControl
+        pageControl.isHidden = !self.showPageControl
         return pageControl
         
     }()
     
     // MARK: - 自定义构造方法
-    convenience init(images: [String], imageSelectCallBack: (index: Int) -> ()){
+    convenience init(images: [String], imageSelectCallBack: @escaping (_ index: Int) -> ()){
         
         self.init()
         
@@ -110,7 +110,7 @@ class HSHInfiniteScrollView: UIView {
     // 设置pageControl 位置
     private func addChildViewsConstraints(){
     
-        let dict = ["self": self, "pageControl" : pageControl]
+        let dict = ["self": self, "pageControl" : pageControl] as [String : Any]
     
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         
@@ -126,10 +126,10 @@ class HSHInfiniteScrollView: UIView {
             
         }
         
-        let layoutH1 = NSLayoutConstraint.constraintsWithVisualFormat(str!, options: .DirectionLeadingToTrailing, metrics: nil, views: dict)
+        let layoutH1 = NSLayoutConstraint.constraints(withVisualFormat: str!, options: .directionLeadingToTrailing, metrics: nil, views: dict)
         self.addConstraints(layoutH1)
         
-        let layoutV1 = NSLayoutConstraint.constraintsWithVisualFormat("V:[pageControl]-(-5)-|", options: .DirectionLeadingToTrailing, metrics: nil, views: dict)
+        let layoutV1 = NSLayoutConstraint.constraints(withVisualFormat: "V:[pageControl]-(-5)-|", options: .directionLeadingToTrailing, metrics: nil, views: dict)
         self.addConstraints(layoutV1)
     }
     
@@ -141,9 +141,9 @@ class HSHInfiniteScrollView: UIView {
             let imageView = scrollView?.subviews[i] as? UIImageView
             var indexPage = pageControl.currentPage
             if i == 0 {
-                indexPage--
+                indexPage -= 1
             }else if i == 2 {
-                indexPage++
+                indexPage += 1
             }
             if indexPage < 0 {
                 indexPage = pageControl.numberOfPages - 1;
@@ -156,19 +156,19 @@ class HSHInfiniteScrollView: UIView {
             imageView?.tag = indexPage
             imageView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showImageInfo:"))
         }
-        scrollView!.contentOffset = scrollDirectionLandscape ? CGPointMake(scrollView!.frame.size.width, 0) : CGPointMake(0, scrollView!.frame.size.height)
+        scrollView!.contentOffset = scrollDirectionLandscape ? CGPoint(x:scrollView!.frame.size.width,y: 0) : CGPoint(x:0, y:scrollView!.frame.size.height)
     }
 
     
-    private func startTimer(){
+    public func startTimer(){
     
-        let timer = NSTimer(timeInterval: 2, target: self, selector: "nextPage", userInfo: nil, repeats: true)
+        let timer = Timer(timeInterval: 2, target: self, selector: "nextPage", userInfo: nil, repeats: true)
         self.timer = timer
-        NSRunLoop.mainRunLoop().addTimer(timer, forMode: NSRunLoopCommonModes)
+        RunLoop.main.add(timer, forMode: RunLoopMode.commonModes)
     
     }
     
-    private func stopTimer(){
+    public func stopTimer(){
         timer?.invalidate()
         timer = nil
     }
@@ -184,7 +184,7 @@ class HSHInfiniteScrollView: UIView {
     
     @objc private func showImageInfo(tap: UITapGestureRecognizer){
         
-        imageSelectCallBack!(index: pageControl.currentPage)
+        imageSelectCallBack!(pageControl.currentPage)
 
     }
 }
